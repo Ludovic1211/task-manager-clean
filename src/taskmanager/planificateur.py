@@ -1,33 +1,61 @@
-def ordonner_taches(self) -> dict[str, tuple[int, int]]:
-    """
-    Calcule les dates de début et de fin au plus tôt de chaque tâche.
-    Retourne un dictionnaire {nom_tache: (debut, fin)}.
-    Tient compte de la contrainte que deux livraisons ne peuvent être simultanées.
-    """
-    planning = {}
-    livraisons_occupees = []  # Liste de tuples (début, fin) des livraisons déjà placées
+import networkx as nx
+from taskmanager.tache import Tache
 
-    for tache_nom in nx.topological_sort(self.graphe):
-        tache = self.taches[tache_nom]
 
-        # Date de début minimale basée sur les dépendances
-        if not tache.dependances:
-            debut = 0
-        else:
-            debut = max(planning[dep][1] for dep in tache.dependances)
+class Planificateur:
+    def __init__(self):
+        """
+        Initialise un planificateur avec un graphe dirigé pour gérer les dépendances.
+        """
+        self.taches: dict[str, Tache] = {}
+        self.graphe: nx.DiGraph = nx.DiGraph()
 
-        if tache.livraison:
-            # Éviter le chevauchement avec d'autres livraisons
-            while any(
-                not (debut + tache.duree <= d or debut >= f)
-                for d, f in livraisons_occupees
-            ):
-                debut += 1  # Décaler jusqu'à ce qu'il n'y ait plus de conflit
+    def ajouter_tache(self, tache: Tache):
+        """
+        Ajoute une tâche et ses dépendances dans le graphe.
+        """
+        self.taches[tache.nom] = tache
+        self.graphe.add_node(tache.nom)
+        for dep in tache.dependances:
+            self.graphe.add_edge(dep, tache.nom)
 
-            # Ajouter cette livraison à la liste des plages occupées
-            livraisons_occupees.append((debut, debut + tache.duree))
+    def generer_planning(self) -> list[str]:
+        """
+        Génère un ordre d'exécution des tâches respectant les dépendances.
+        Retourne une liste de noms de tâches triées topologiquement.
+        """
+        try:
+            return list(nx.topological_sort(self.graphe))
+        except nx.NetworkXUnfeasible:
+            raise ValueError("Le graphe contient un cycle : impossible de générer un planning.")
 
-        fin = debut + tache.duree
-        planning[tache_nom] = (debut, fin)
+    def ordonner_taches(self) -> dict[str, tuple[int, int]]:
+        """
+        Calcule les dates de début et de fin au plus tôt de chaque tâche,
+        en tenant compte de la contrainte : pas de livraisons simultanées.
+        Retourne un dictionnaire {nom_tache: (debut, fin)}.
+        """
+        planning: dict[str, tuple[int, int]] = {}
+        livraisons_occupees: dict[int, str] = {}
 
-    return planning
+        for tache_nom in nx.topological_sort(self.graphe):
+            tache = self.taches[tache_nom]
+
+            # Calcul du début au plus tôt
+            if not tache.dependances:
+                debut = 0
+            else:
+                debut = max(planning[dep][1] for dep in tache.dependances)
+
+            # Si c'est une livraison, vérifier les créneaux déjà occupés
+            if tache.livraison:
+                while any(jour in livraisons_occupees for jour in range(debut, debut + tache.duree)):
+                    debut += 1  # Décaler jusqu'à trouver un créneau libre
+                # Marquer les jours occupés
+                for jour in range(debut, debut + tache.duree):
+                    livraisons_occupees[jour] = tache.nom
+
+            fin = debut + tache.duree
+            planning[tache_nom] = (debut, fin)
+
+        return planning
