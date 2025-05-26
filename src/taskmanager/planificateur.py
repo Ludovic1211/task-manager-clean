@@ -59,3 +59,14 @@ class Planificateur:
             planning[tache_nom] = (debut, fin)
 
         return planning
+
+    def duree_totale(self) -> int:
+        """
+        Calcule et retourne la durée minimale totale du projet (en jours),
+        en considérant le chemin critique (le chemin le plus long dans le graphe des dépendances).
+
+        Returns:
+            int: Durée minimale pour terminer toutes les tâches.
+        """
+        dates = self.ordonner_taches()
+        return max(fin for _, fin in dates.values())
