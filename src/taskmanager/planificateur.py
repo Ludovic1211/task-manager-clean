@@ -1,5 +1,5 @@
 import networkx as nx
-from taskmanager.tache import Tache
+from tache import Tache
 
 
 class Planificateur:

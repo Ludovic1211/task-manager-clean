@@ -1,6 +1,6 @@
 
-from taskmanager.planificateur import Planificateur
-from taskmanager.exemple_donnees import donnees_taches
+from planificateur import Planificateur
+from exemple_donnees import donnees_taches
 
 
 def demo_maison():

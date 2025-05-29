@@ -1,6 +1,6 @@
 
-from taskmanager.tache import Tache
-from taskmanager.planificateur import Planificateur
+from tache import Tache
+from planificateur import Planificateur
 
 def test_ajout_tache_simple():
     t1 = Tache("Fondations", 10)  # ✅ préalables est optionnel

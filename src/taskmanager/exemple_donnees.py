@@ -1,4 +1,4 @@
-from .tache import Tache
+from tache import Tache
 
 donnees_taches = [
     Tache("A", 3, livraison=True),                     # Livraison des câblages
