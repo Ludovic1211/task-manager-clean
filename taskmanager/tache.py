@@ -14,6 +14,4 @@ class Tache:
             f"Tache(nom='{self.nom}', duree={self.duree}, "
             f"dependances={self.dependances}, livraison={self.livraison})"
         )
-        #er#
-        #modif dans le second test#
         
