@@ -1,19 +1,23 @@
 [project]
 name = "task-manager-clean"
+
 version = "0.1.0"
-description = "Add your description here"
+description = "Création d'un planing optimal pour la création d'une maison de plein pied"
 readme = "README.md"
+
 authors = [
     { name = "Marc AHANHANZO GLELE", email = "glele.ola@gmail.com" }
     { name = "Ludovic COURTIN", email = "" }
 ]
 requires-python = ">=3.13"
 dependencies = []
+
 [project.scripts]
 TASK-MANAGER_CLEAN = "main.py"
 
 [build-system]
 requires = ["networkx"]
-build-backend = "hatchling.build"
+build-backend = []
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
