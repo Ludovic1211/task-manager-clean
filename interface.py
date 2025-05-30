@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox
 from taskmanager.planificateur import Planificateur
 from taskmanager.tache import Tache
 from taskmanager.exemple_donnees import donnees_taches

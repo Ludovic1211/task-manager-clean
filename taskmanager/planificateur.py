@@ -4,30 +4,23 @@ from taskmanager.tache import Tache
 
 class Planificateur:
     def __init__(self):
-        """
-        Initialise un planificateur avec un graphe dirigé pour gérer les dépendances.
-        """
+    
         self.taches: dict[str, Tache] = {}
         self.graphe: nx.DiGraph = nx.DiGraph()
 
     def ajouter_tache(self, tache: Tache):
-        """
-        Ajoute une tâche et ses dépendances dans le graphe.
-        """
+        
         self.taches[tache.nom] = tache
         self.graphe.add_node(tache.nom)
         for dep in tache.dependances:
             self.graphe.add_edge(dep, tache.nom)
 
     def generer_planning(self) -> list[str]:
-        """
-        Génère un ordre d'exécution des tâches respectant les dépendances.
-        Retourne une liste de noms de tâches triées topologiquement.
-        """
+        
         try:
             return list(nx.topological_sort(self.graphe))
         except nx.NetworkXUnfeasible:
-            raise ValueError("Le graphe contient un cycle : impossible de générer un planning.")
+            raise ValueError("Le graphe contient un cycle : planning pas possible.")
 
     def ordonner_taches(self) -> dict[str, tuple[int, int]]:
         """
