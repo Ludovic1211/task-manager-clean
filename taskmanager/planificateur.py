@@ -23,11 +23,7 @@ class Planificateur:
             raise ValueError("Le graphe contient un cycle : planning pas possible.")
 
     def ordonner_taches(self) -> dict[str, tuple[int, int]]:
-        """
-        Calcule les dates de début et de fin au plus tôt de chaque tâche,
-        en tenant compte de la contrainte : pas de livraisons simultanées.
-        Retourne un dictionnaire {nom_tache: (debut, fin)}.
-        """
+        
         planning: dict[str, tuple[int, int]] = {}
         livraisons_occupees: dict[int, str] = {}
 
@@ -54,12 +50,6 @@ class Planificateur:
         return planning
 
     def duree_totale(self) -> int:
-        """
-        Calcule et retourne la durée minimale totale du projet (en jours),
-        en considérant le chemin critique (le chemin le plus long dans le graphe des dépendances).
-
-        Returns:
-            int: Durée minimale pour terminer toutes les tâches.
-        """
+    
         dates = self.ordonner_taches()
         return max(fin for _, fin in dates.values())
