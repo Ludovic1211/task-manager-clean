@@ -6,6 +6,10 @@ from taskmanager.exemple_donnees import donnees_taches
 
 class InterfacePlanificateur:
     def __init__(self, root):
+        """
+        commence l’interface, crée un Planificateur
+        et ajoute les tâches
+        """
         self.root = root
         self.root.title("Planificateur de tâches")
         self.plan = Planificateur()
@@ -13,8 +17,11 @@ class InterfacePlanificateur:
         for t in donnees_taches:
             self.plan.ajouter_tache(t)
 
-        self.build_ui()
-
+        self.build_ui() 
+        """
+        Construit les éléments de l'interface utilisateur :
+        champs de saisie, boutons, liste des dépendances et zone de texte pour les résultats.
+        """
     def build_ui(self):
         frame_form = tk.Frame(self.root)
         frame_form.pack(padx=10, pady=10, fill="x")
@@ -46,11 +53,20 @@ class InterfacePlanificateur:
         self.txt_resultat.pack(padx=10, pady=10)
 
     def update_dependance_list(self):
+        """
+        Met à jour la liste des dépendances par rapport à celles
+        actuellement tâches  présentes dans le planificateur.
+        """
         self.lst_dependances.delete(0, tk.END)
         for nom in self.plan.taches:
             self.lst_dependances.insert(tk.END, nom)
 
     def ajouter_tache(self):
+        """
+        Récupère les données saisies dans le formulaire, crée une nouvelle tâche,
+        ajoute au planificateur et met à jour la liste des dépendances.
+        Affiche un message si les entrées sont invalides ou si il y a des doublons.
+        """
         nom = self.entry_nom.get().strip()
         duree = self.entry_duree.get().strip()
         livraison = self.var_livraison.get()
@@ -75,6 +91,10 @@ class InterfacePlanificateur:
             messagebox.showerror("Erreur", str(e))
 
     def generer_planning(self):
+        """
+        Génère l’ordre des tâches et un planning à partir des données du planificateur.
+        Affiche les résultats dans la zone de texte, avec la durée totale du projet en jour.
+        """
         try:
             ordre = self.plan.generer_planning()
             planning = self.plan.ordonner_taches()
