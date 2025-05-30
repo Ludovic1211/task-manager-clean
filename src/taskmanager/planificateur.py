@@ -35,9 +35,8 @@ class Planificateur:
         en tenant compte de la contrainte : pas de livraisons simultanées.
         Retourne un dictionnaire {nom_tache: (debut, fin)}.
         """
-        planning: dict[str, tuple[int, int]] = {}
-        livraisons_occupees: dict[int, str] = {}
-
+        planning: dict[str, tuple[int, int]] = {} # Dictionnaire pour stocker les dates de début et de fin
+        livraisons_occupees: dict[int, str] = {} # Dictionnaire pour suivre les jours occupés par des livraisons
         for tache_nom in nx.topological_sort(self.graphe):
             tache = self.taches[tache_nom]
 
@@ -46,6 +45,11 @@ class Planificateur:
                 debut = 0
             else:
                 debut = max(planning[dep][1] for dep in tache.dependances)
+                """
+                Si la tâche a des dépendances, on prend la fin de la dernière dépendance
+                pour déterminer le début au plus tôt de la tâche actuelle.
+                Sinon, on commence à 0.      
+                """
 
             # Si c'est une livraison, vérifier les créneaux déjà occupés
             if tache.livraison:
