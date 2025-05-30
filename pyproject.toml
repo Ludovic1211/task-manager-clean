@@ -1,8 +1,12 @@
 [project]
 name = "task-manager-clean"
 version = "0.1.0"
-description = "Planning de tâches basé sur un graphe de dépendances (tri topologique, livraisons, Gantt)"
+description = "Création d'un planificateur de taches"
 readme = "README.md"
+authors = [
+    { name = "Ludovic COURTIN", email = "" },
+    { name = "Marc AHANHANZO GLELE", email = "glele.ola@gmail.com" }
+]
 requires-python = ">=3.13"
 authors = [{ name = "Ludovic Courtin", email = "ludovic.courtin@etu.univ-tours.fr" } {}]
 dependencies = [
@@ -11,10 +15,4 @@ dependencies = [
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
-
-[tool.mypy]
-python_version = "3.13"
-strict = true
-files = ["src"]
-
+pythonpath = ["."]

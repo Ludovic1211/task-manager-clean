@@ -1,4 +1,3 @@
-
 from taskmanager.planificateur import Planificateur
 from taskmanager.exemple_donnees import donnees_taches
 
