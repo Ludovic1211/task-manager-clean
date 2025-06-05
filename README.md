@@ -13,7 +13,7 @@ main.py
 uv run main.py en étant dans "task-manager-clean"
 
 <3------<3-------pour lancer l'interface--<3-------------
-python interface_planificateur.py
+python interface.py
 
 ----<3--------------Interface:------------------------------
 Ajout de tâches avec : nom, durée (en jours), livraison (oui/non), dépendances vers d'autres tâches

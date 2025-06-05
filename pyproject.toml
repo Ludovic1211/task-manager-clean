@@ -8,10 +8,8 @@ authors = [
     { name = "Marc AHANHANZO GLELE", email = "glele.ola@gmail.com" }
 ]
 requires-python = ">=3.13"
-authors = [{ name = "Ludovic Courtin", email = "ludovic.courtin@etu.univ-tours.fr" } {}]
 dependencies = [
-  "networkx",
-  "rich"
+  "networkx"
 ]
 
 [tool.pytest.ini_options]

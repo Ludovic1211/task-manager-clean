@@ -4,7 +4,7 @@ class Tache:
         self.nom = nom
         self.duree = duree
         self.dependances = prealables if prealables is not None else []
-        self.livraison = livraison  # Nouvel attribut
+        self.livraison = livraison
 
     def __repr__(self):
         return (
