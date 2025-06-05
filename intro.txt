@@ -1,0 +1,7 @@
+Bienvenue dans le Planificateur de Tâches !
+
+- Ajoutez une tâche via le formulaire : nom, durée, dépendances, livraison.
+- Vous pouvez définir le nombre maximum de tâches ou livraisons simultanées.
+- Supprimez une tâche avec le bouton dédié.
+- Sauvegardez ou rechargez vos tâches à tout moment.
+- Générez un planning et visualisez le diagramme de Gantt.

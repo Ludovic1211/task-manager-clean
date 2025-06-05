@@ -1,0 +1,168 @@
+[
+    {
+        "nom": "A",
+        "duree": 3,
+        "dependances": [],
+        "livraison": true
+    },
+    {
+        "nom": "B",
+        "duree": 4,
+        "dependances": [
+            "A"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "C",
+        "duree": 1,
+        "dependances": [
+            "B"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "D",
+        "duree": 4,
+        "dependances": [],
+        "livraison": true
+    },
+    {
+        "nom": "E",
+        "duree": 2,
+        "dependances": [
+            "D",
+            "H"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "F",
+        "duree": 5,
+        "dependances": [
+            "E",
+            "I"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "G",
+        "duree": 1,
+        "dependances": [],
+        "livraison": false
+    },
+    {
+        "nom": "H",
+        "duree": 3,
+        "dependances": [
+            "G"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "I",
+        "duree": 5,
+        "dependances": [
+            "H"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "J",
+        "duree": 6,
+        "dependances": [],
+        "livraison": true
+    },
+    {
+        "nom": "K",
+        "duree": 3,
+        "dependances": [
+            "J",
+            "I"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "L",
+        "duree": 14,
+        "dependances": [
+            "I"
+        ],
+        "livraison": true
+    },
+    {
+        "nom": "M",
+        "duree": 2,
+        "dependances": [
+            "L",
+            "I"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "N",
+        "duree": 2,
+        "dependances": [
+            "M",
+            "L"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "O",
+        "duree": 3,
+        "dependances": [
+            "M",
+            "F",
+            "C"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "P",
+        "duree": 3,
+        "dependances": [
+            "O",
+            "N"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "Q",
+        "duree": 2,
+        "dependances": [
+            "P"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "R",
+        "duree": 1,
+        "dependances": [
+            "N",
+            "K",
+            "O"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "S",
+        "duree": 3,
+        "dependances": [
+            "R"
+        ],
+        "livraison": false
+    },
+    {
+        "nom": "ah ?",
+        "duree": 12,
+        "dependances": [],
+        "livraison": false
+    },
+    {
+        "nom": "grand",
+        "duree": 20,
+        "dependances": [],
+        "livraison": false
+    }
+]
