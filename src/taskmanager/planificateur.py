@@ -1,16 +1,17 @@
+from typing import Dict, List, Tuple
 import networkx as nx
 from taskmanager.tache import Tache
 
 
 class Planificateur:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialise un planificateur avec un graphe dirigé pour gérer les dépendances.
         """
-        self.taches: dict[str, Tache] = {}
+        self.taches: Dict[str, Tache] = {}
         self.graphe: nx.DiGraph = nx.DiGraph()
 
-    def ajouter_tache(self, tache: Tache):
+    def ajouter_tache(self, tache: Tache) -> None:
         """
         Ajoute une tâche et ses dépendances dans le graphe.
         """
@@ -19,7 +20,7 @@ class Planificateur:
         for dep in tache.dependances:
             self.graphe.add_edge(dep, tache.nom)
 
-    def generer_planning(self) -> list[str]:
+    def generer_planning(self) -> List[str]:
         """
         Génère un ordre d'exécution des tâches respectant les dépendances.
         Retourne une liste de noms de tâches triées topologiquement.
@@ -29,48 +30,37 @@ class Planificateur:
         except nx.NetworkXUnfeasible:
             raise ValueError("Le graphe contient un cycle : impossible de générer un planning.")
 
-    def ordonner_taches(self) -> dict[str, tuple[int, int]]:
+    def ordonner_taches(self) -> Dict[str, Tuple[int, int]]:
         """
         Calcule les dates de début et de fin au plus tôt de chaque tâche,
         en tenant compte de la contrainte : pas de livraisons simultanées.
         Retourne un dictionnaire {nom_tache: (debut, fin)}.
         """
-        planning: dict[str, tuple[int, int]] = {} # Dictionnaire pour stocker les dates de début et de fin
-        livraisons_occupees: dict[int, str] = {} # Dictionnaire pour suivre les jours occupés par des livraisons
+        planning: Dict[str, Tuple[int, int]] = {}
+        livraisons_occupees: Dict[int, str] = {}
+
         for tache_nom in nx.topological_sort(self.graphe):
             tache = self.taches[tache_nom]
 
-            # Calcul du début au plus tôt
             if not tache.dependances:
-                debut = 0
+                debut: int = 0
             else:
                 debut = max(planning[dep][1] for dep in tache.dependances)
-                """
-                Si la tâche a des dépendances, on prend la fin de la dernière dépendance
-                pour déterminer le début au plus tôt de la tâche actuelle.
-                Sinon, on commence à 0.      
-                """
 
-            # Si c'est une livraison, vérifier les créneaux déjà occupés
             if tache.livraison:
                 while any(jour in livraisons_occupees for jour in range(debut, debut + tache.duree)):
-                    debut += 1  # Décaler jusqu'à trouver un créneau libre
-                # Marquer les jours occupés
+                    debut += 1
                 for jour in range(debut, debut + tache.duree):
                     livraisons_occupees[jour] = tache.nom
 
-            fin = debut + tache.duree
+            fin: int = debut + tache.duree
             planning[tache_nom] = (debut, fin)
 
         return planning
 
     def duree_totale(self) -> int:
         """
-        Calcule et retourne la durée minimale totale du projet (en jours),
-        en considérant le chemin critique (le chemin le plus long dans le graphe des dépendances).
-
-        Returns:
-            int: Durée minimale pour terminer toutes les tâches.
+        Calcule et retourne la durée minimale totale du projet (en jours).
         """
         dates = self.ordonner_taches()
         return max(fin for _, fin in dates.values())
