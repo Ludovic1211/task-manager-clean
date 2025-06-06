@@ -1,8 +1,8 @@
-
 from taskmanager.tache import Tache
 from taskmanager.planificateur import Planificateur
 
-def test_ajout_tache_simple():
+
+def test_ajout_tache_simple() -> None:
     """
     Teste l'ajout d'une tâche sans dépendance au planificateur.
     Vérifie que la tâche est bien enregistrée dans le graphe.
@@ -13,7 +13,7 @@ def test_ajout_tache_simple():
     assert "Fondations" in p.graphe
 
 
-def test_ajout_taches_avec_dependances():
+def test_ajout_taches_avec_dependances() -> None:
     """
     Teste l'ajout de tâches avec dépendances.
     Vérifie que l'ordre dans le planning respecte les dépendances imposées.
@@ -30,7 +30,7 @@ def test_ajout_taches_avec_dependances():
     assert ordre.index("A") < ordre.index("B") < ordre.index("C")
 
 
-def test_detection_cycle():
+def test_detection_cycle() -> None:
     """
     Teste la détection de cycle dans les dépendances.
     Le planificateur doit lever une exception si un cycle est présent.
@@ -49,7 +49,7 @@ def test_detection_cycle():
         assert True
 
 
-def test_dates_debut_fin():
+def test_dates_debut_fin() -> None:
     """
     Vérifie que les dates de début et de fin calculées sont correctes
     pour une suite de tâches avec dépendances.
@@ -69,7 +69,7 @@ def test_dates_debut_fin():
     assert resultats["C"] == (5, 6)
 
 
-def test_duree_totale_projet():
+def test_duree_totale_projet() -> None:
     """
     Vérifie que la durée totale du projet correspond bien au chemin critique.
     Ici, le chemin le plus long est A → B → C → E.
