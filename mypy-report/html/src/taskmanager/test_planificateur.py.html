@@ -97,114 +97,95 @@
 <span id="L87" class="lineno"><a class="lineno" href="#L87">87</a></span>
 <span id="L88" class="lineno"><a class="lineno" href="#L88">88</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">from taskmanager.tache import Tache</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from taskmanager.tache import Tache</span>
 <span class="line-precise" title="No Anys on this line!">from taskmanager.planificateur import Planificateur</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">def test_ajout_tache_simple():</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">def test_ajout_tache_simple() -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
 <span class="line-empty" title="No Anys on this line!">    Teste l'ajout d'une tâche sans dépendance au planificateur.</span>
 <span class="line-empty" title="No Anys on this line!">    Vérifie que la tâche est bien enregistrée dans le graphe.</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t1 = Tache("Fondations", 10)</span>
+<span class="line-precise" title="No Anys on this line!">    t1 = Tache("Fondations", 10)</span>
 <span class="line-precise" title="No Anys on this line!">    p = Planificateur()</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">    p.ajouter_tache(t1)</span>
+<span class="line-precise" title="No Anys on this line!">    p.ajouter_tache(t1)</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x1)">    assert "Fondations" in p.graphe</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">def test_ajout_taches_avec_dependances():</span>
+<span class="line-precise" title="No Anys on this line!">def test_ajout_taches_avec_dependances() -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
 <span class="line-empty" title="No Anys on this line!">    Teste l'ajout de tâches avec dépendances.</span>
 <span class="line-empty" title="No Anys on this line!">    Vérifie que l'ordre dans le planning respecte les dépendances imposées.</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t1 = Tache("A", 2)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t2 = Tache("B", 3, ["A"])</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t3 = Tache("C", 1, ["A", "B"])</span>
+<span class="line-precise" title="No Anys on this line!">    t1 = Tache("A", 2)</span>
+<span class="line-precise" title="No Anys on this line!">    t2 = Tache("B", 3, ["A"])</span>
+<span class="line-precise" title="No Anys on this line!">    t3 = Tache("C", 1, ["A", "B"])</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    p = Planificateur()</span>
 <span class="line-precise" title="No Anys on this line!">    for t in [t1, t2, t3]:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        p.ajouter_tache(t)</span>
+<span class="line-precise" title="No Anys on this line!">        p.ajouter_tache(t)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    ordre = p.generer_planning()</span>
-<span class="line-any" title="No Anys on this line!">    assert ordre.index("A") &lt; ordre.index("B") &lt; ordre.index("C")</span>
+<span class="line-precise" title="No Anys on this line!">    assert ordre.index("A") &lt; ordre.index("B") &lt; ordre.index("C")</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">def test_detection_cycle():</span>
+<span class="line-precise" title="No Anys on this line!">def test_detection_cycle() -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
 <span class="line-empty" title="No Anys on this line!">    Teste la détection de cycle dans les dépendances.</span>
 <span class="line-empty" title="No Anys on this line!">    Le planificateur doit lever une exception si un cycle est présent.</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t1 = Tache("A", 1, ["B"])</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t2 = Tache("B", 1, ["A"])</span>
+<span class="line-precise" title="No Anys on this line!">    t1 = Tache("A", 1, ["B"])</span>
+<span class="line-precise" title="No Anys on this line!">    t2 = Tache("B", 1, ["A"])</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    p = Planificateur()</span>
 <span class="line-precise" title="No Anys on this line!">    for t in [t1, t2]:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        p.ajouter_tache(t)</span>
+<span class="line-precise" title="No Anys on this line!">        p.ajouter_tache(t)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!">    try:</span>
 <span class="line-precise" title="No Anys on this line!">        p.generer_planning()</span>
-<span class="line-any" title="No Anys on this line!">        assert False, "Un cycle aurait dû être détecté"</span>
+<span class="line-precise" title="No Anys on this line!">        assert False, "Un cycle aurait dû être détecté"</span>
 <span class="line-precise" title="No Anys on this line!">    except ValueError:</span>
-<span class="line-any" title="No Anys on this line!">        assert True</span>
+<span class="line-precise" title="No Anys on this line!">        assert True</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">def test_dates_debut_fin():</span>
+<span class="line-precise" title="No Anys on this line!">def test_dates_debut_fin() -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
 <span class="line-empty" title="No Anys on this line!">    Vérifie que les dates de début et de fin calculées sont correctes</span>
 <span class="line-empty" title="No Anys on this line!">    pour une suite de tâches avec dépendances.</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t1 = Tache("A", 2)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t2 = Tache("B", 3, ["A"])</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t3 = Tache("C", 1, ["A", "B"])</span>
+<span class="line-precise" title="No Anys on this line!">    t1 = Tache("A", 2)</span>
+<span class="line-precise" title="No Anys on this line!">    t2 = Tache("B", 3, ["A"])</span>
+<span class="line-precise" title="No Anys on this line!">    t3 = Tache("C", 1, ["A", "B"])</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    p = Planificateur()</span>
 <span class="line-precise" title="No Anys on this line!">    for t in [t1, t2, t3]:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        p.ajouter_tache(t)</span>
+<span class="line-precise" title="No Anys on this line!">        p.ajouter_tache(t)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    resultats = p.ordonner_taches()</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    assert resultats["A"] == (0, 2)</span>
-<span class="line-any" title="No Anys on this line!">    assert resultats["B"] == (2, 5)</span>
-<span class="line-any" title="No Anys on this line!">    assert resultats["C"] == (5, 6)</span>
+<span class="line-precise" title="No Anys on this line!">    assert resultats["A"] == (0, 2)</span>
+<span class="line-precise" title="No Anys on this line!">    assert resultats["B"] == (2, 5)</span>
+<span class="line-precise" title="No Anys on this line!">    assert resultats["C"] == (5, 6)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">def test_duree_totale_projet():</span>
+<span class="line-precise" title="No Anys on this line!">def test_duree_totale_projet() -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
 <span class="line-empty" title="No Anys on this line!">    Vérifie que la durée totale du projet correspond bien au chemin critique.</span>
 <span class="line-empty" title="No Anys on this line!">    Ici, le chemin le plus long est A → B → C → E.</span>
 <span class="line-empty" title="No Anys on this line!">    """</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t1 = Tache("A", 1)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t2 = Tache("B", 2, ["A"])</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t3 = Tache("C", 3, ["B"])</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t4 = Tache("D", 2, ["A"])</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    t5 = Tache("E", 1, ["D", "C"])</span>
+<span class="line-precise" title="No Anys on this line!">    t1 = Tache("A", 1)</span>
+<span class="line-precise" title="No Anys on this line!">    t2 = Tache("B", 2, ["A"])</span>
+<span class="line-precise" title="No Anys on this line!">    t3 = Tache("C", 3, ["B"])</span>
+<span class="line-precise" title="No Anys on this line!">    t4 = Tache("D", 2, ["A"])</span>
+<span class="line-precise" title="No Anys on this line!">    t5 = Tache("E", 1, ["D", "C"])</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    p = Planificateur()</span>
 <span class="line-precise" title="No Anys on this line!">    for t in [t1, t2, t3, t4, t5]:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        p.ajouter_tache(t)</span>
+<span class="line-precise" title="No Anys on this line!">        p.ajouter_tache(t)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    duree = p.duree_totale()</span>
-<span class="line-any" title="No Anys on this line!">    assert duree == 7  # A(1) → B(2) → C(3) → E(1)</span>
+<span class="line-precise" title="No Anys on this line!">    assert duree == 7  # A(1) → B(2) → C(3) → E(1)</span>
 </pre></td>
 </tr></tbody>
 </table>

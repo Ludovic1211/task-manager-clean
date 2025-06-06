@@ -74,45 +74,33 @@
 <span id="L64" class="lineno"><a class="lineno" href="#L64">64</a></span>
 <span id="L65" class="lineno"><a class="lineno" href="#L65">65</a></span>
 <span id="L66" class="lineno"><a class="lineno" href="#L66">66</a></span>
-<span id="L67" class="lineno"><a class="lineno" href="#L67">67</a></span>
-<span id="L68" class="lineno"><a class="lineno" href="#L68">68</a></span>
-<span id="L69" class="lineno"><a class="lineno" href="#L69">69</a></span>
-<span id="L70" class="lineno"><a class="lineno" href="#L70">70</a></span>
-<span id="L71" class="lineno"><a class="lineno" href="#L71">71</a></span>
-<span id="L72" class="lineno"><a class="lineno" href="#L72">72</a></span>
-<span id="L73" class="lineno"><a class="lineno" href="#L73">73</a></span>
-<span id="L74" class="lineno"><a class="lineno" href="#L74">74</a></span>
-<span id="L75" class="lineno"><a class="lineno" href="#L75">75</a></span>
-<span id="L76" class="lineno"><a class="lineno" href="#L76">76</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-any" title="No Anys on this line!">import networkx as nx</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from typing import Dict, List, Tuple</span>
+<span class="line-any" title="No Anys on this line!">import networkx as nx</span>
 <span class="line-precise" title="No Anys on this line!">from taskmanager.tache import Tache</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class Planificateur:</span>
-<span class="line-any" title="No Anys on this line!">    def __init__(self):</span>
+<span class="line-precise" title="No Anys on this line!">    def __init__(self) -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-empty" title="No Anys on this line!">        Initialise un planificateur avec un graphe dirigé pour gérer les dépendances.</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
-<span class="line-precise" title="No Anys on this line!">        self.taches: dict[str, Tache] = {}</span>
+<span class="line-precise" title="No Anys on this line!">        self.taches: Dict[str, Tache] = {}</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x4)">        self.graphe: nx.DiGraph = nx.DiGraph()</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    def ajouter_tache(self, tache: Tache):</span>
+<span class="line-precise" title="No Anys on this line!">    def ajouter_tache(self, tache: Tache) -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-empty" title="No Anys on this line!">        Ajoute une tâche et ses dépendances dans le graphe.</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-precise" title="No Anys on this line!">        self.taches[tache.nom] = tache</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">        self.graphe.add_node(tache.nom)</span>
+<span class="line-precise" title="No Anys on this line!">        for dep in tache.dependances:</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        for dep in tache.dependances:</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x3)
-Unannotated (x1)">            self.graphe.add_edge(dep, tache.nom)</span>
+Unimported (x3)">            self.graphe.add_edge(dep, tache.nom)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">    def generer_planning(self) -&gt; list[str]:</span>
+<span class="line-precise" title="No Anys on this line!">    def generer_planning(self) -&gt; List[str]:</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-empty" title="No Anys on this line!">        Génère un ordre d'exécution des tâches respectant les dépendances.</span>
 <span class="line-empty" title="No Anys on this line!">        Retourne une liste de noms de tâches triées topologiquement.</span>
@@ -125,42 +113,33 @@ Unimported (x4)">            return list(nx.topological_sort(self.graphe))</span
 Unimported (x2)">        except nx.NetworkXUnfeasible:</span>
 <span class="line-precise" title="No Anys on this line!">            raise ValueError("Le graphe contient un cycle : impossible de générer un planning.")</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">    def ordonner_taches(self) -&gt; dict[str, tuple[int, int]]:</span>
+<span class="line-precise" title="No Anys on this line!">    def ordonner_taches(self) -&gt; Dict[str, Tuple[int, int]]:</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-empty" title="No Anys on this line!">        Calcule les dates de début et de fin au plus tôt de chaque tâche,</span>
 <span class="line-empty" title="No Anys on this line!">        en tenant compte de la contrainte : pas de livraisons simultanées.</span>
 <span class="line-empty" title="No Anys on this line!">        Retourne un dictionnaire {nom_tache: (debut, fin)}.</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
-<span class="line-precise" title="No Anys on this line!">        planning: dict[str, tuple[int, int]] = {} # Dictionnaire pour stocker les dates de début et de fin</span>
-<span class="line-precise" title="No Anys on this line!">        livraisons_occupees: dict[int, str] = {} # Dictionnaire pour suivre les jours occupés par des livraisons</span>
+<span class="line-precise" title="No Anys on this line!">        planning: Dict[str, Tuple[int, int]] = {}</span>
+<span class="line-precise" title="No Anys on this line!">        livraisons_occupees: Dict[int, str] = {}</span>
+<span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x5)">        for tache_nom in nx.topological_sort(self.graphe):</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x1)">            tache = self.taches[tache_nom]</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-empty" title="No Anys on this line!">            # Calcul du début au plus tôt</span>
-<span class="line-imprecise" title="Any Types on this line: 
-Unannotated (x2)">            if not tache.dependances:</span>
-<span class="line-precise" title="No Anys on this line!">                debut = 0</span>
+<span class="line-precise" title="No Anys on this line!">            if not tache.dependances:</span>
+<span class="line-precise" title="No Anys on this line!">                debut: int = 0</span>
 <span class="line-empty" title="No Anys on this line!">            else:</span>
-<span class="line-any" title="Any Types on this line: 
-Omitted Generics (x23)
-Unannotated (x4)">                debut = max(planning[dep][1] for dep in tache.dependances)</span>
-<span class="line-empty" title="No Anys on this line!">                """</span>
-<span class="line-empty" title="No Anys on this line!">                Si la tâche a des dépendances, on prend la fin de la dernière dépendance</span>
-<span class="line-empty" title="No Anys on this line!">                pour déterminer le début au plus tôt de la tâche actuelle.</span>
-<span class="line-empty" title="No Anys on this line!">                Sinon, on commence à 0.      </span>
-<span class="line-empty" title="No Anys on this line!">                """</span>
+<span class="line-precise" title="Any Types on this line: 
+Omitted Generics (x23)">                debut = max(planning[dep][1] for dep in tache.dependances)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-empty" title="No Anys on this line!">            # Si c'est une livraison, vérifier les créneaux déjà occupés</span>
 <span class="line-precise" title="No Anys on this line!">            if tache.livraison:</span>
 <span class="line-precise" title="No Anys on this line!">                while any(jour in livraisons_occupees for jour in range(debut, debut + tache.duree)):</span>
-<span class="line-precise" title="No Anys on this line!">                    debut += 1  # Décaler jusqu'à trouver un créneau libre</span>
-<span class="line-empty" title="No Anys on this line!">                # Marquer les jours occupés</span>
+<span class="line-precise" title="No Anys on this line!">                    debut += 1</span>
 <span class="line-precise" title="No Anys on this line!">                for jour in range(debut, debut + tache.duree):</span>
 <span class="line-precise" title="No Anys on this line!">                    livraisons_occupees[jour] = tache.nom</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">            fin = debut + tache.duree</span>
+<span class="line-precise" title="No Anys on this line!">            fin: int = debut + tache.duree</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x1)">            planning[tache_nom] = (debut, fin)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
@@ -168,11 +147,7 @@ Unimported (x1)">            planning[tache_nom] = (debut, fin)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    def duree_totale(self) -&gt; int:</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
-<span class="line-empty" title="No Anys on this line!">        Calcule et retourne la durée minimale totale du projet (en jours),</span>
-<span class="line-empty" title="No Anys on this line!">        en considérant le chemin critique (le chemin le plus long dans le graphe des dépendances).</span>
-<span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-empty" title="No Anys on this line!">        Returns:</span>
-<span class="line-empty" title="No Anys on this line!">            int: Durée minimale pour terminer toutes les tâches.</span>
+<span class="line-empty" title="No Anys on this line!">        Calcule et retourne la durée minimale totale du projet (en jours).</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-precise" title="No Anys on this line!">        dates = self.ordonner_taches()</span>
 <span class="line-precise" title="Any Types on this line: 

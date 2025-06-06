@@ -24,25 +24,38 @@
 <span id="L14" class="lineno"><a class="lineno" href="#L14">14</a></span>
 <span id="L15" class="lineno"><a class="lineno" href="#L15">15</a></span>
 <span id="L16" class="lineno"><a class="lineno" href="#L16">16</a></span>
+<span id="L17" class="lineno"><a class="lineno" href="#L17">17</a></span>
+<span id="L18" class="lineno"><a class="lineno" href="#L18">18</a></span>
+<span id="L19" class="lineno"><a class="lineno" href="#L19">19</a></span>
+<span id="L20" class="lineno"><a class="lineno" href="#L20">20</a></span>
+<span id="L21" class="lineno"><a class="lineno" href="#L21">21</a></span>
+<span id="L22" class="lineno"><a class="lineno" href="#L22">22</a></span>
+<span id="L23" class="lineno"><a class="lineno" href="#L23">23</a></span>
+<span id="L24" class="lineno"><a class="lineno" href="#L24">24</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">class Tache:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    def __init__(self, nom: str, duree: int, prealables=None, livraison: bool = False):</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from typing import List, Optional</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">class Tache:</span>
+<span class="line-precise" title="No Anys on this line!">    def __init__(self, nom: str, duree: int, prealables: Optional[List[str]] = None, livraison: bool = False) -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!">        """</span>
 <span class="line-empty" title="No Anys on this line!">        Initialise une tâche avec un nom, une durée, une liste de tâches préalables (dépendances),</span>
 <span class="line-empty" title="No Anys on this line!">        et un indicateur précisant s'il s'agit d'une tâche de type 'livraison'.</span>
-<span class="line-empty" title="No Anys on this line!">        """</span>
-<span class="line-precise" title="No Anys on this line!">        self.nom = nom</span>
-<span class="line-precise" title="No Anys on this line!">        self.duree = duree</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        self.dependances = prealables if prealables is not None else []</span>
-<span class="line-precise" title="No Anys on this line!">        self.livraison = livraison  # Nouvel attribut</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def __repr__(self):</span>
+<span class="line-empty" title="No Anys on this line!">        :parametre nom: Le nom de la tâche.</span>
+<span class="line-empty" title="No Anys on this line!">        :parametre duree: La durée de la tâche (en jours par exemple).</span>
+<span class="line-empty" title="No Anys on this line!">        :parametre prealables: Liste des noms de tâches qui doivent être réalisées avant celle-ci.</span>
+<span class="line-empty" title="No Anys on this line!">        :parametre livraison: Indique si la tâche est une livraison finale.</span>
+<span class="line-empty" title="No Anys on this line!">        """</span>
+<span class="line-precise" title="No Anys on this line!">        self.nom: str = nom</span>
+<span class="line-precise" title="No Anys on this line!">        self.duree: int = duree</span>
+<span class="line-precise" title="No Anys on this line!">        self.dependances: List[str] = prealables if prealables is not None else []</span>
+<span class="line-precise" title="No Anys on this line!">        self.livraison: bool = livraison</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">    def __repr__(self) -&gt; str:</span>
 <span class="line-empty" title="No Anys on this line!">        return (</span>
-<span class="line-any" title="No Anys on this line!">            f"Tache(nom='{self.nom}', duree={self.duree}, "</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">            f"dependances={self.dependances}, livraison={self.livraison})"</span>
+<span class="line-precise" title="No Anys on this line!">            f"Tache(nom='{self.nom}', duree={self.duree}, "</span>
+<span class="line-precise" title="No Anys on this line!">            f"dependances={self.dependances}, livraison={self.livraison})"</span>
 <span class="line-empty" title="No Anys on this line!">        )</span>
 </pre></td>
 </tr></tbody>
