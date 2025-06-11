@@ -5,3 +5,5 @@ Bienvenue dans le Planificateur de Tâches !
 - Supprimez une tâche avec le bouton dédié.
 - Sauvegardez ou rechargez vos tâches à tout moment.
 - Générez un planning et visualisez le diagramme de Gantt.
+
+- Dans le fichier "taches_sauvegardees.json" il est possible d'entrer une liste de taches sous le format json
