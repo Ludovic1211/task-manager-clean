@@ -1,3 +1,36 @@
+"""
+interface.py - Interface graphique du planificateur de tâches
+
+Ce module fournit une interface utilisateur graphique (GUI) basée sur Tkinter
+pour permettre aux utilisateurs de créer, gérer, sauvegarder et visualiser
+un planning de tâches avec contraintes.
+
+Fonctionnalités principales :
+- Ajout, suppression et modification de tâches avec durée, dépendances et option de livraison.
+- Sauvegarde et chargement des tâches au format JSON.
+- Génération d'un planning contraint avec visualisation de type diagramme de Gantt.
+- Paramétrage du nombre maximal de tâches et de livraisons simultanées.
+- Affichage d'une introduction depuis un fichier texte si présent.
+
+Classes :
+---------
+- InterfacePlanificateur : classe principale qui gère l'affichage et les interactions avec l'utilisateur.
+
+Constantes :
+------------
+- SAUVEGARDE_PATH : chemin du fichier de sauvegarde des tâches.
+- INTRO_PATH : chemin du fichier contenant l'introduction affichée au démarrage.
+
+Dépendances :
+-------------
+- tkinter : bibliothèque pour la création d'interfaces graphiques.
+- matplotlib : pour la visualisation du diagramme de Gantt.
+- networkx : pour la gestion du graphe de dépendances des tâches.
+- json, os : pour la gestion des fichiers et des chemins.
+- taskmanager.tache : contient la classe Tache.
+- taskmanager.planificateur_contraint : contient la logique de planification sous contraintes.
+"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 from taskmanager.tache import Tache
@@ -12,7 +45,17 @@ SAUVEGARDE_PATH = "taches_sauvegardees.json"
 INTRO_PATH = "intro.txt"
 
 class InterfacePlanificateur:
+    """
+    Classe gérant l'interface graphique du planificateur de tâches.
+    Elle permet d'ajouter, afficher, modifier et planifier des tâches
+    avec contraintes de simultanéité et dépendances.
+    """
+
     def __init__(self, root):
+        """
+        Initialise l'interface avec la fenêtre racine, les variables d'état
+        et les composants principaux.
+        """
         self.root = root
         self.root.title("Planificateur de tâches")
         self.taches_temp = {}
@@ -27,6 +70,9 @@ class InterfacePlanificateur:
         self.charger_taches_sauvegardees()
 
     def afficher_intro(self):
+        """
+        Affiche une fenêtre d'introduction à partir d'un fichier texte s'il existe.
+        """
         if os.path.exists(INTRO_PATH):
             with open(INTRO_PATH, "r", encoding="utf-8") as f:
                 contenu = f.read()
@@ -40,6 +86,9 @@ class InterfacePlanificateur:
             btn_ok.pack(pady=5)
 
     def build_ui(self):
+        """
+        Construit l'interface graphique principale pour la gestion des tâches.
+        """
         self.frame_main = tk.Frame(self.root)
         self.frame_main.pack(fill="both", expand=True)
 
@@ -94,6 +143,9 @@ class InterfacePlanificateur:
         btn_gen.pack(side="left", padx=5)
 
     def charger_taches_sauvegardees(self):
+        """
+        Charge les tâches sauvegardées depuis le fichier JSON et les affiche dans l'interface.
+        """
         self.taches_temp.clear()
         for row in self.tree.get_children():
             self.tree.delete(row)
@@ -110,6 +162,10 @@ class InterfacePlanificateur:
             self.tree.insert("", tk.END, iid=tache.nom, values=(tache.nom, tache.duree, ", ".join(tache.dependances), "Oui" if tache.livraison else "Non"))
 
     def ajouter_tache(self):
+        """
+        Ajoute une nouvelle tâche à partir des champs de saisie.
+        Vérifie la validité des entrées et empêche les doublons.
+        """
         nom = self.entry_nom.get().strip()
         duree = self.entry_duree.get().strip()
         livraison = self.var_livraison.get()
@@ -128,6 +184,9 @@ class InterfacePlanificateur:
         self.tree.insert("", tk.END, iid=nom, values=(nom, duree, ", ".join(dependances), "Oui" if livraison else "Non"))
 
     def supprimer_tache(self):
+        """
+        Supprime la tâche sélectionnée dans l'arbre (Treeview).
+        """
         sel = self.tree.selection()
         for item in sel:
             if item in self.taches_temp:
@@ -135,12 +194,18 @@ class InterfacePlanificateur:
             self.tree.delete(item)
 
     def sauvegarder_taches(self):
+        """
+        Sauvegarde les tâches en cours dans un fichier JSON.
+        """
         data = [t.__dict__ for t in self.taches_temp.values()]
         with open(SAUVEGARDE_PATH, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
         messagebox.showinfo("Succès", "Tâches sauvegardées avec succès.")
 
     def afficher_planning(self):
+        """
+        Génère un planning à partir des tâches et affiche l'ordre, la durée et un diagramme de Gantt.
+        """
         planificateur = PlanificateurContraint(self.taches_temp, self.max_taches_simultanées.get(), self.max_livraisons_simultanées.get())
 
         try:
@@ -183,6 +248,9 @@ class InterfacePlanificateur:
         btn_retour.pack(pady=10)
 
     def retour_interface_principale(self):
+        """
+        Revient à l'interface principale après l'affichage du planning.
+        """
         self.frame_planning.pack_forget()
         self.build_ui()
         for t in self.taches_temp.values():
