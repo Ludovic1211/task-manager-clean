@@ -1,3 +1,36 @@
+"""
+interface.py - Interface graphique du planificateur de tâches
+
+Ce module fournit une interface utilisateur graphique (GUI) basée sur Tkinter
+pour permettre aux utilisateurs de créer, gérer, sauvegarder et visualiser
+un planning de tâches avec contraintes.
+
+Fonctionnalités principales :
+- Ajout, suppression et modification de tâches avec durée, dépendances et option de livraison.
+- Sauvegarde et chargement des tâches au format JSON.
+- Génération d'un planning contraint avec visualisation de type diagramme de Gantt.
+- Paramétrage du nombre maximal de tâches et de livraisons simultanées.
+- Affichage d'une introduction depuis un fichier texte si présent.
+
+Classes :
+---------
+- InterfacePlanificateur : classe principale qui gère l'affichage et les interactions avec l'utilisateur.
+
+Constantes :
+------------
+- SAUVEGARDE_PATH : chemin du fichier de sauvegarde des tâches.
+- INTRO_PATH : chemin du fichier contenant l'introduction affichée au démarrage.
+
+Dépendances :
+-------------
+- tkinter : bibliothèque pour la création d'interfaces graphiques.
+- matplotlib : pour la visualisation du diagramme de Gantt.
+- networkx : pour la gestion du graphe de dépendances des tâches.
+- json, os : pour la gestion des fichiers et des chemins.
+- taskmanager.tache : contient la classe Tache.
+- taskmanager.planificateur_contraint : contient la logique de planification sous contraintes.
+"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 from taskmanager.tache import Tache
