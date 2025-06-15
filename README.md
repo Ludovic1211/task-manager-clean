@@ -1,44 +1,35 @@
+**Task Manager Clean** est une application Python avec interface graphique permettant de :
 
--------------------Structure Du Projet---------------------
-taskmanager/
-├── __init__.py
-├── tache.py               # Classe Tache
-├── planificateur.py       # Classe Planificateur
-├── exemple_donnees.py     # Les Tâches du projet actuel
-interface_planificateur.py # Interface graphique principale (Tkinter)
-├
-main.py
+- Définir des tâches à planifier (durée, dépendances, livraison)
+- Générer un planning sous contraintes (tâches/livraisons simultanées)
+- Visualiser la planification sous forme de liste et de diagramme de Gantt
+- Sauvegarder et recharger des projets facilement
 
-<3-------------pour lancer le main.py---------------<3--
-uv run main.py en étant dans "task-manager-clean"
+## Interface graphique
 
-<3------<3-------pour lancer l'interface--<3-------------
-python interface.py
+L’interface utilisateur permet :
 
-----<3--------------Interface:------------------------------
-Ajout de tâches avec : nom, durée (en jours), livraison (oui/non), dépendances vers d'autres tâches
+- L’ajout manuel ou multiple de tâches
+- La suppression et l’affichage en tableau
+- Le réglage du nombre maximal de tâches et de livraisons simultanées
+- L’affichage du planning détaillé et de sa durée totale
+- Une visualisation Gantt interactive (via matplotlib)
 
--Visualisation de l’ordre des tâches à effectuer 
--Génération automatique du planning avec dates de début et de fin
--Calcul de la durée totale du projet
+## Contraintes prises en compte
 
--------------------Contenu du Taskmanager-------------------
- Exemple de données
-  -liste des taches pour le projet actuel ( maison)
+Lors de la génération du planning :
 
- Planificateur
-  -création du planificateur
-  -réalisation du tri topologique
+- Une tâche ne peut commencer que si toutes ses dépendances sont terminées
+- Un nombre maximal de tâches peut être exécuté en parallèle (`max_taches`)
+- Un nombre maximal de livraisons peut avoir lieu simultanément (`max_livraisons`)
 
- Tache.py
-   -Création de la classe tache avec les facteurs qui la composent
-   -Préparation de la facon dont la classe s'affiche 
+## Tests
 
------------explication d'un tri topologique-----------------------
-   -représenter le nombre de fois qu'un sommet peut etre parcouru
-   -tester chaque sommet puis numéroté
-   -inverser l'ordre obtenu pour avoir un des ordres possibles
-   -considérer une tache comme un sommet sur un graphique orienté 
+Les modules sont testés avec `pytest`, avec suivi de la couverture :
+
+## particularitées
+Lors du mancement de l'interface, une fenetre souvrira pour vous expliquer son fonctionnement 
 
 
+il peut y avoir un problème d'environnement que nos n'avons pas pu régler directement. Pour exécuter l'interface par "python interface.py" il n'y a pas besoin d'etre dans taskmanager. Ce probleème d'environnement bloque aussi le fichier test de l'interface graphique et c'est pour cela que ce dernier a été retiré et placé dans "loupé"
 

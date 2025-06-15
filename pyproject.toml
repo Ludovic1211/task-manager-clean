@@ -18,6 +18,7 @@ dependencies = [
   "lxml"
 ]
 
-
 [tool.pytest.ini_options]
 pythonpath = ["."]
+addopts = "--cov=taskmanager --cov-report=term-missing"
+testpaths = ["tests"]

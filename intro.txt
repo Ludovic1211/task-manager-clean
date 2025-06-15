@@ -1,9 +1,17 @@
-Bienvenue dans le Planificateur de Tâches !
+Bienvenue dans l'interface de planification de tâches !
 
-- Ajoutez une tâche via le formulaire : nom, durée, dépendances, livraison.
-- Vous pouvez définir le nombre maximum de tâches ou livraisons simultanées.
-- Supprimez une tâche avec le bouton dédié.
-- Sauvegardez ou rechargez vos tâches à tout moment.
-- Générez un planning et visualisez le diagramme de Gantt.
+Cette application vous permet de :
 
-- Dans le fichier "taches_sauvegardees.json" il est possible d'entrer une liste de taches sous le format json
+- Ajouter des tâches avec une durée, des dépendances et un statut de livraison.
+- Gérer visuellement votre liste de tâches (ajout, suppression, sauvegarde).
+- Générer un planning optimisé selon vos contraintes :
+  • Nombre maximal de tâches exécutées simultanément
+  • Nombre maximal de livraisons simultanées
+- Visualiser l'ordre des tâches et leur répartition dans le temps
+  grâce à un diagramme de Gantt intégré.
+
+Vous pouvez aussi ajouter plusieurs tâches d'un coup grâce à l'option "Ajout multiple".
+
+N'oubliez pas de sauvegarder votre travail régulièrement 
+
+Bon planning !

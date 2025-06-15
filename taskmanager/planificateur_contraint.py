@@ -6,9 +6,21 @@ from typing import Dict, Tuple, List, Set
 class PlanificateurContraint:
     """
     Planificateur avec contraintes sur le nombre de tâches et de livraisons simultanées.
+
+    Ce planificateur utilise un graphe orienté acyclique (DAG) pour organiser les tâches selon leurs dépendances.
+    Il respecte des contraintes sur le nombre de tâches pouvant être exécutées simultanément
+    ainsi que sur le nombre de livraisons simultanées.
     """
 
     def __init__(self, taches: Dict[str, Tache], max_taches: int = 1, max_livraisons: int = 1) -> None:
+        """
+        Initialise le planificateur avec les tâches et les contraintes de parallélisme.
+
+        Aves:
+            taches (Dict[str, Tache]): Dictionnaire des tâches.
+            max_taches (int): Nombre maximal de tâches pouvant être exécutées en parallèle.
+            max_livraisons (int): Nombre maximal de livraisons pouvant avoir lieu en meme temps.
+        """
         self.taches: Dict[str, Tache] = taches
         self.graphe: nx.DiGraph = nx.DiGraph()
         self.max_taches: int = max_taches
@@ -21,7 +33,8 @@ class PlanificateurContraint:
 
     def generer_planning(self) -> Dict[str, Tuple[int, int]]:
         """
-        Génère un planning contraint par un nombre maximal de tâches et de livraisons simultanées.
+        Génère un planning tenant compte des contraintes puis rend un dictionnaire associant à chaque tâche son intervalle (début, fin).
+        Il y a une erreur si un cycle est détecté.
         """
         try:
             ordre_topologique: List[str] = list(nx.topological_sort(self.graphe))
@@ -42,13 +55,13 @@ class PlanificateurContraint:
             nb_taches = len(en_cours)
             nb_livraisons = len([1 for nom, _ in livraisons_occupees if self.taches[nom].livraison])
 
-            # Tâches prêtes
+            # Identifier les tâches prêtes à être exécutées
             disponibles: List[str] = [
                 nom for nom in en_attente
                 if all(dep in planning for dep in self.taches[nom].dependances)
             ]
 
-            # Lancer les tâches possibles
+            # Lancer les tâches dans les limites des contraintes
             for nom in disponibles:
                 if nb_taches >= self.max_taches:
                     break
@@ -72,7 +85,7 @@ class PlanificateurContraint:
 
     def duree_totale(self) -> int:
         """
-        Retourne la durée totale du projet avec les contraintes appliquées.
+        Calcule la durée totale du projet en tenant compte des contraintes et renvoie le nombre total de jours nécessaires pour exécuter toutes les tâches.
         """
         planning = self.generer_planning()
         return max(fin for _, fin in planning.values())

@@ -12,12 +12,20 @@ SAUVEGARDE_PATH = "taches_sauvegardees.json"
 INTRO_PATH = "intro.txt"
 
 class InterfacePlanificateur:
+    """
+    Interface graphique pour planifier et visualiser les tâches
+    avec les contraintes de simultanéité et de livraisons.
+    """
     def __init__(self, root):
+        """
+        Initialise l'interface et charge les éléments principaux.        
+        """
         self.root = root
         self.root.title("Planificateur de tâches")
         self.taches_temp = {}
         self.frame_main = None
         self.frame_planning = None
+        self.frame_multiple = None
 
         self.max_taches_simultanées = tk.IntVar(value=1)
         self.max_livraisons_simultanées = tk.IntVar(value=1)
@@ -27,6 +35,10 @@ class InterfacePlanificateur:
         self.charger_taches_sauvegardees()
 
     def afficher_intro(self):
+        """
+        Affiche un message d'introduction en lisant le contenu d'un fichier texte `intro.txt`,
+        s'il existe.
+        """
         if os.path.exists(INTRO_PATH):
             with open(INTRO_PATH, "r", encoding="utf-8") as f:
                 contenu = f.read()
@@ -40,6 +52,10 @@ class InterfacePlanificateur:
             btn_ok.pack(pady=5)
 
     def build_ui(self):
+        """
+        Construit l'interface principale avec les champs d'ajout de tâches, les réglages de
+        simultanéité, la liste des tâches, et les boutons de commande.
+        """
         self.frame_main = tk.Frame(self.root)
         self.frame_main.pack(fill="both", expand=True)
 
@@ -81,19 +97,91 @@ class InterfacePlanificateur:
         frame_btn = tk.Frame(self.frame_main)
         frame_btn.pack(pady=5)
 
-        btn_del = tk.Button(frame_btn, text="Supprimer tâche", command=self.supprimer_tache)
-        btn_del.pack(side="left", padx=5)
+        tk.Button(frame_btn, text="Supprimer tâche", command=self.supprimer_tache).pack(side="left", padx=5)
+        tk.Button(frame_btn, text="Sauvegarder tâches", command=self.sauvegarder_taches).pack(side="left", padx=5)
+        tk.Button(frame_btn, text="Charger tâches sauvegardées", command=self.charger_taches_sauvegardees).pack(side="left", padx=5)
+        tk.Button(frame_btn, text="Générer planning", command=self.afficher_planning).pack(side="left", padx=5)
+        tk.Button(frame_btn, text="Ajouter plusieurs tâches", command=self.afficher_page_ajout_multiple).pack(side="left", padx=5)
 
-        btn_save = tk.Button(frame_btn, text="Sauvegarder tâches", command=self.sauvegarder_taches)
-        btn_save.pack(side="left", padx=5)
+    def afficher_page_ajout_multiple(self):
+        """
+        Affiche une interface alternative permettant d'ajouter plusieurs tâches à la fois.
+        """
+        self.frame_main.pack_forget()
+        self.frame_multiple = tk.Frame(self.root)
+        self.frame_multiple.pack(fill="both", expand=True)
 
-        btn_load = tk.Button(frame_btn, text="Charger tâches sauvegardées", command=self.charger_taches_sauvegardees)
-        btn_load.pack(side="left", padx=5)
+        self.liste_tache_inputs = []
 
-        btn_gen = tk.Button(frame_btn, text="Générer planning", command=self.afficher_planning)
-        btn_gen.pack(side="left", padx=5)
+        tk.Label(self.frame_multiple, text="Ajout multiple de tâches", font=("Arial", 16, "bold")).pack(pady=10)
+        tk.Label(self.frame_multiple, text="(nom, durée, dépendances séparées par des virgules, livraison)", font=("Arial", 10, "italic")).pack(pady=(0, 5))
+
+        self.frame_inputs_zone = tk.Frame(self.frame_multiple)
+        self.frame_inputs_zone.pack(padx=10, pady=10)
+
+        self.ajouter_bloc_tache()
+
+        frame_btns = tk.Frame(self.frame_multiple)
+        frame_btns.pack(pady=10)
+
+        tk.Button(frame_btns, text="Ajouter un champ de tâche", command=self.ajouter_bloc_tache).pack(side="left", padx=5)
+        tk.Button(frame_btns, text="Valider les tâches", command=self.valider_taches_multiples).pack(side="left", padx=5)
+        tk.Button(frame_btns, text="Retour", command=self.retour_depuis_multiple).pack(side="left", padx=5)
+
+    def ajouter_bloc_tache(self):
+        frame = tk.Frame(self.frame_inputs_zone)
+        frame.pack(fill="x", pady=3)
+
+        nom = tk.Entry(frame, width=15)
+        nom.grid(row=0, column=0)
+        duree = tk.Entry(frame, width=5)
+        duree.grid(row=0, column=1)
+        dependances = tk.Entry(frame, width=25)
+        dependances.grid(row=0, column=2)
+        livraison = tk.BooleanVar()
+        chk = tk.Checkbutton(frame, text="Livraison", variable=livraison)
+        chk.grid(row=0, column=3)
+
+        self.liste_tache_inputs.append((nom, duree, dependances, livraison))
+
+    def valider_taches_multiples(self):
+        """
+        Valide les tâches saisies dans l'interface d'ajout multiple et les ajoute à la liste
+        temporaire. Affiche un message de confirmation.
+        """
+        for nom, duree, deps, livraison in self.liste_tache_inputs:
+            nom_val = nom.get().strip()
+            duree_val = duree.get().strip()
+            deps_val = [d.strip() for d in deps.get().split(",") if d.strip()]
+
+            if not nom_val or not duree_val.isdigit():
+                continue
+
+            if nom_val in self.taches_temp:
+                continue
+
+            tache = Tache(nom_val, int(duree_val), deps_val, livraison.get())
+            self.taches_temp[nom_val] = tache
+            self.tree.insert("", tk.END, iid=nom_val, values=(nom_val, duree_val, ", ".join(deps_val), "Oui" if livraison.get() else "Non"))
+
+        messagebox.showinfo("Succès", "Tâches ajoutées avec succès.")
+        self.retour_depuis_multiple()
+
+    def retour_depuis_multiple(self):
+        """
+        Reviens de l'interface d'ajout multiple à l'interface principale, en gardant les
+        tâches ajoutées.
+        """
+        self.frame_multiple.pack_forget()
+        self.build_ui()
+        for t in self.taches_temp.values():
+            self.tree.insert("", tk.END, iid=t.nom, values=(t.nom, t.duree, ", ".join(t.dependances), "Oui" if t.livraison else "Non"))
 
     def charger_taches_sauvegardees(self):
+        """
+        Charge les tâches enregistrées dans le fichier JSON (contenant la liste de tache si il y en a un) et les affiche dans
+        l'interface.
+        """
         self.taches_temp.clear()
         for row in self.tree.get_children():
             self.tree.delete(row)
@@ -110,6 +198,10 @@ class InterfacePlanificateur:
             self.tree.insert("", tk.END, iid=tache.nom, values=(tache.nom, tache.duree, ", ".join(tache.dependances), "Oui" if tache.livraison else "Non"))
 
     def ajouter_tache(self):
+        """
+        Ajoute une tâche saisie via l'interface principale après validation des champs.
+        Affiche une erreur si la saisie est invalide.
+        """
         nom = self.entry_nom.get().strip()
         duree = self.entry_duree.get().strip()
         livraison = self.var_livraison.get()
@@ -128,6 +220,9 @@ class InterfacePlanificateur:
         self.tree.insert("", tk.END, iid=nom, values=(nom, duree, ", ".join(dependances), "Oui" if livraison else "Non"))
 
     def supprimer_tache(self):
+        """
+        Supprime la ou les tâches sélectionnées dans la liste.
+        """
         sel = self.tree.selection()
         for item in sel:
             if item in self.taches_temp:
@@ -135,12 +230,21 @@ class InterfacePlanificateur:
             self.tree.delete(item)
 
     def sauvegarder_taches(self):
+        """
+        Sauvegarde les tâches actuellement en mémoire dans un fichier JSON.
+        Affiche un message de confirmation.
+        """
         data = [t.__dict__ for t in self.taches_temp.values()]
         with open(SAUVEGARDE_PATH, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
         messagebox.showinfo("Succès", "Tâches sauvegardées avec succès.")
 
     def afficher_planning(self):
+        """
+        Génère et affiche le planning à partir des tâches puis aussi
+        un diagramme de Gantt dans l'interface.
+        Affiche un message d'erreur en cas de problème de planification.
+        """
         planificateur = PlanificateurContraint(self.taches_temp, self.max_taches_simultanées.get(), self.max_livraisons_simultanées.get())
 
         try:
@@ -183,6 +287,10 @@ class InterfacePlanificateur:
         btn_retour.pack(pady=10)
 
     def retour_interface_principale(self):
+        """
+        Retourne à l'interface principale après l'affichage du planning, tout en conservant
+        les tâches en mémoire.
+        """
         self.frame_planning.pack_forget()
         self.build_ui()
         for t in self.taches_temp.values():
